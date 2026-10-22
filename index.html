@@ -12,7 +12,7 @@
   :root{
     --green:#84c0b4; --green-2:#6fb3a6; --green-deep:#4f9e90;
     --green-soft:#eff6f4; --green-tint:#e5efec;
-    --ink:#2f3536; --charcoal:#373c3d; --charcoal-2:#2c3031;
+    --ink:#2f3536; --charcoal:#373c3d; --charcoal-2:#2c3031; --beige:#faf7f1;
     --muted:#6a7173; --line:#e8eaea;
     --white:#ffffff; --paper:#f6f8f7; --gray-soft:#f3f5f4;
     --on-green:#ffffff; --on-green-muted:#eaf4f1;
@@ -139,20 +139,20 @@
   .ig-cta{text-align:center}
 
   /* CONTACTO */
-  #contacto{background:var(--charcoal);color:var(--on-dark)}
-  #contacto .eyebrow{color:var(--green)}
-  #contacto .sec-head h2{color:#fff}
+  #contacto{background:var(--beige);color:var(--ink)}
+  #contacto .eyebrow{color:var(--green-deep)}
+  #contacto .sec-head h2{color:var(--ink)}
   .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:stretch}
   .crow{display:flex;gap:15px;margin-bottom:26px;align-items:flex-start}
-  .crow .ci{width:44px;height:44px;border-radius:13px;background:rgba(132,192,180,.18);color:var(--green);display:flex;align-items:center;justify-content:center;flex:none}
-  .crow h4{font-family:var(--head);font-size:.95rem;margin-bottom:2px;font-weight:600;color:#fff}
-  .crow p,.crow a{color:var(--on-dark-muted);font-size:.98rem}
-  .crow a:hover{color:var(--green)}
+  .crow .ci{width:44px;height:44px;border-radius:13px;background:rgba(132,192,180,.22);color:var(--green-deep);display:flex;align-items:center;justify-content:center;flex:none}
+  .crow h4{font-family:var(--head);font-size:.95rem;margin-bottom:2px;font-weight:600;color:var(--ink)}
+  .crow p,.crow a{color:#5f6b69;font-size:.98rem}
+  .crow a:hover{color:var(--green-deep)}
   .map{border-radius:var(--radius);overflow:hidden;min-height:360px}
   .map iframe{width:100%;height:100%;border:0;min-height:360px}
 
   /* FOOTER */
-  footer{background:var(--charcoal-2);color:var(--on-dark-muted);padding:60px 0 34px}
+  footer{background:#4c5553;color:var(--on-dark-muted);padding:60px 0 34px}
   .foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:40px;margin-bottom:40px}
   footer .logo-img{height:50px;margin-bottom:16px}
   footer p{font-size:.92rem;max-width:280px}
@@ -398,7 +398,9 @@
     ["Pamela Nicotra","Medicina Reproductiva","assets/equipo/nicotra.webp","Postgrado en Genética Médica en Valencia y formada en el área reproductiva en el centro Reprogenetics de Nueva York."],
     ["Camila Correa Sadouet","Cardióloga","assets/equipo/correa.webp","Coordinadora de Cardiología y Mujer · Cardio-obstetricia."],
     ["Deborah Braver","Médica Clínica","assets/equipo/braver.webp","Clínica médica · UBA · M.N. 129840."],
-    ["Victoria Soares","Puericultora IBCLC","assets/equipo/soares.webp","Lactancia, crianza y masaje infantil Shantala. Cursos para padres en disciplina positiva."]
+    ["Victoria Soares","Puericultora IBCLC","assets/equipo/soares.webp","Lactancia, crianza y masaje infantil Shantala. Cursos para padres en disciplina positiva."],
+    ["Hector Guillermo Lodeiro","Médico Obstetra · Homeópata","assets/equipo/lodeiro.webp","Defensor del parto y nacimiento humanizado desde 1978."],
+    ["Taci Amaral","Medicina Estética","assets/equipo/amaral.webp","MELA Láser · Labios · Botox"]
   ];
   document.getElementById('esp-cards').innerHTML = especialidades.map(e=>
     `<div class="card"><div class="badge">${svg(e[0])}</div><h3>${e[1]}</h3><p>${e[2]}</p></div>`).join("");
