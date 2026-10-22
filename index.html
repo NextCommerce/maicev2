@@ -83,11 +83,23 @@
   /* STAFF */
   #staff{background:var(--gray-soft)}
   .staff-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
-  .doc{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:26px 20px;text-align:center;transition:transform .18s,box-shadow .2s}
-  .doc:hover{transform:translateY(-5px);box-shadow:0 18px 40px rgba(79,158,144,.14)}
+  .doc{position:relative;height:320px;border-radius:20px;cursor:pointer;transition:transform .2s ease,box-shadow .22s ease}
+  .doc:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(79,158,144,.22)}
+  .doc .flip{position:absolute;inset:0;perspective:1200px}
+  .doc-inner{position:relative;width:100%;height:100%;transition:transform .6s cubic-bezier(.4,.1,.2,1);transform-style:preserve-3d}
+  .doc.flipped .doc-inner{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:20px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;overflow:hidden}
+  .face.front{background:var(--white);border:1px solid var(--line)}
   .doc .avatar{width:118px;height:118px;border-radius:50%;margin:0 auto 16px;background-size:cover;background-position:center top;background-color:var(--green-tint);box-shadow:0 0 0 4px var(--green-soft)}
-  .doc h4{font-size:1rem;margin-bottom:3px;font-weight:600}
-  .doc p{font-size:.84rem;color:var(--green-deep);font-family:var(--head);font-weight:500}
+  .face.front h4{font-size:1rem;margin-bottom:3px;font-weight:600}
+  .face.front p{font-size:.84rem;color:var(--green-deep);font-family:var(--head);font-weight:500}
+  .cue{position:absolute;bottom:12px;right:12px;width:30px;height:30px;border-radius:50%;background:var(--green-soft);color:var(--green-deep);display:flex;align-items:center;justify-content:center;transition:transform .45s ease,background .3s ease,color .3s ease}
+  .cue svg{width:15px;height:15px}
+  .doc:hover .cue{transform:rotate(180deg);background:var(--green);color:#fff}
+  .face.back{background:var(--green);color:#fff;transform:rotateY(180deg)}
+  .face.back h4{font-family:var(--head);font-weight:600;font-size:1rem;margin-bottom:10px}
+  .face.back .desc{font-size:clamp(.74rem,2.6vw,.85rem);line-height:1.45}
+  .face.back .spec{margin-top:12px;font-family:var(--head);font-weight:500;font-size:.76rem;opacity:.85}
 
   /* ESPECIALIDADES */
   #especialidades{background:var(--white)}
@@ -367,31 +379,41 @@
   ];
   const CDN="https://maice.b-cdn.net/Content/UploadDirectory/Doctores/";
   const staff = [
-    ["Jorge Hamer","Ecografía Obstétrica","assets/equipo/hamer.webp"],
-    ["Ignacio Perez Tomasone","Ginecólogo Obstetra","assets/equipo/tomasone.webp"],
-    ["Juan Pablo Sojo","Ginecólogo Obstetra","assets/equipo/sojo.webp"],
-    ["Luciana Pisarenco","Ginecóloga Obstetra","assets/equipo/pisarenco.webp"],
-    ["Fernando Da Pra","Ginecólogo Obstetra","assets/equipo/dapra.webp"],
-    ["María Inés Samper","Ginecóloga Obstetra","assets/equipo/samper.webp"],
-    ["German Van Thillo","Ginec. Obstetra · Acupuntura","assets/equipo/vanthillo.webp"],
-    ["Sebastián Ares","Ginecólogo Obstetra","assets/equipo/ares.webp"],
-    ["Gastón Senyk","Obstetra y Ginecólogo","assets/equipo/senyk.webp"],
-    ["Alejandro Polaino","Ginecólogo · Cirugía Ginecológica","assets/equipo/polaino.webp"],
-    ["María Celeste Sluga","Estética Ginecológica","assets/equipo/sluga.webp"],
-    ["Sofía Stajcer","Psicóloga Perinatal","assets/equipo/stajer.webp"],
-    ["Marisol Epelboim","Psicóloga Perinatal","assets/equipo/epelboim.webp"],
-    ["María Eugenia Gonzalez","Psicóloga · Adolescentes y adultos","assets/equipo/gonzalez.webp"],
-    ["Adriana Hamer","Nutricionista","assets/equipo/adrianahamer.webp"],
-    ["Adan Nabel","Medicina Reproductiva","assets/equipo/nabel.webp"],
-    ["Pamela Nicotra","Medicina Reproductiva","assets/equipo/nicotra.webp"],
-    ["Camila Correa Sadouet","Cardióloga","assets/equipo/correa.webp"],
-    ["Deborah Braver","Médica Clínica","assets/equipo/braver.webp"],
-    ["Victoria Soares","Puericultora IBCLC","assets/equipo/soares.webp"]
+    ["Jorge Hamer","Ecografía Obstétrica","assets/equipo/hamer.webp","Reconocido obstetra especialista en Ecografía 5D, Scan morfológico temprano, Doppler color, NT Plus, Sonohisterografía 3D."],
+    ["Ignacio Perez Tomasone","Ginecólogo Obstetra","assets/equipo/tomasone.webp","Especialista en embarazos de riesgo y alta complejidad."],
+    ["Juan Pablo Sojo","Ginecólogo Obstetra","assets/equipo/sojo.webp","Nacimientos conscientes, amorosos y cuidados."],
+    ["Luciana Pisarenco","Ginecóloga Obstetra","assets/equipo/pisarenco.webp","Especialista en partos de alto y bajo riesgo."],
+    ["Fernando Da Pra","Ginecólogo Obstetra","assets/equipo/dapra.webp","Embarazo de alto y bajo riesgo."],
+    ["María Inés Samper","Ginecóloga Obstetra","assets/equipo/samper.webp","Control gineco-embarazo · HPV · ACO."],
+    ["German Van Thillo","Ginec. Obstetra · Acupuntura","assets/equipo/vanthillo.webp","Especialista en medicina reproductiva y acupuntura."],
+    ["Sebastián Ares","Ginecólogo Obstetra","assets/equipo/ares.webp","Especialista en partos de alto y bajo riesgo."],
+    ["Gastón Senyk","Obstetra y Ginecólogo","assets/equipo/senyk.webp","Diagnóstico prenatal y medicina fetal."],
+    ["Alejandro Polaino","Ginecólogo · Cirugía Ginecológica","assets/equipo/polaino.webp","Cirugía laparoscópica · Histeroscopias · Uroginecología."],
+    ["María Celeste Sluga","Estética Ginecológica","assets/equipo/sluga.webp","Ginecología general · Patología vulvar · Ginecología estética y regenerativa."],
+    ["Sofía Stajcer","Psicóloga Perinatal","assets/equipo/stajer.webp","Psi Perinatal · Clínica de adultos · PsicoFertilidad · PsicoSexología."],
+    ["Marisol Epelboim","Psicóloga Perinatal","assets/equipo/epelboim.webp","Psicóloga, psicoanalista clínica y psicóloga perinatal."],
+    ["María Eugenia Gonzalez","Psicóloga · Adolescentes y adultos","assets/equipo/gonzalez.webp","Especialista en adolescencia y adultos."],
+    ["Adriana Hamer","Nutricionista","assets/equipo/adrianahamer.webp","Planes personalizados. Fertilidad, embarazo, lactancia, sobrepeso y alteraciones de la conducta alimentaria."],
+    ["Adan Nabel","Medicina Reproductiva","assets/equipo/nabel.webp","Ginecólogo especialista en medicina reproductiva, con más de 20 años de experiencia en reproducción asistida."],
+    ["Pamela Nicotra","Medicina Reproductiva","assets/equipo/nicotra.webp","Postgrado en Genética Médica en Valencia y formada en el área reproductiva en el centro Reprogenetics de Nueva York."],
+    ["Camila Correa Sadouet","Cardióloga","assets/equipo/correa.webp","Coordinadora de Cardiología y Mujer · Cardio-obstetricia."],
+    ["Deborah Braver","Médica Clínica","assets/equipo/braver.webp","Clínica médica · UBA · M.N. 129840."],
+    ["Victoria Soares","Puericultora IBCLC","assets/equipo/soares.webp","Lactancia, crianza y masaje infantil Shantala. Cursos para padres en disciplina positiva."]
   ];
   document.getElementById('esp-cards').innerHTML = especialidades.map(e=>
     `<div class="card"><div class="badge">${svg(e[0])}</div><h3>${e[1]}</h3><p>${e[2]}</p></div>`).join("");
-  document.getElementById('staff-grid').innerHTML = staff.map(d=>
-    `<div class="doc"><div class="avatar" style="background-image:url('${d[2]}')"></div><h4>${d[0]}</h4><p>${d[1]}</p></div>`).join("");
+  const flechaGiro='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>';
+  document.getElementById('staff-grid').innerHTML = staff.map(d=>{
+    const back = d[3] ? `<div class="desc">${d[3]}</div><div class="spec">${d[1]}</div>` : `<div class="desc">${d[1]}</div>`;
+    return `<div class="doc" tabindex="0"><div class="flip"><div class="doc-inner">`+
+      `<div class="face front"><div class="avatar" style="background-image:url('${d[2]}')"></div><h4>${d[0]}</h4><p>${d[1]}</p><span class="cue">${flechaGiro}</span></div>`+
+      `<div class="face back"><h4>${d[0]}</h4>${back}</div>`+
+      `</div></div></div>`;
+  }).join("");
+  (function(){var g=document.getElementById('staff-grid');
+    g.addEventListener('click',function(e){var c=e.target.closest('.doc');if(c)c.classList.toggle('flipped');});
+    g.addEventListener('keydown',function(e){if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('doc')){e.preventDefault();e.target.classList.toggle('flipped');}});
+  })();
   const igIcon2='<svg class="igmk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>';
   const igPosts=[
     {img:"assets/ig/epelboim.webp",url:"https://www.instagram.com/maice_maternity/reel/DdRfVGbBP2z/"},
